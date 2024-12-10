@@ -23,11 +23,9 @@ const server = http.createServer((req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = 8080;
 
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+server.listen(PORT, 'localhost', () => {
+    console.log(`Server running at http://localhost:${PORT}/`);
 });
 
-// This line is added to prevent the Node.js process from exiting immediately
-process.stdin.resume();
