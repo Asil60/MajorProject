@@ -1,30 +1,22 @@
-import http from 'http';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+// Import required modules
+const express = require('express');
+const path = require('path');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Create an instance of Express application
+const app = express();
 
-const server = http.createServer((req, res) => {
-    if (req.url === '/' || req.url === '/index.html') {
-        fs.readFile(path.join(__dirname, 'index.html'), (err, content) => {
-            if (err) {
-                res.writeHead(500);
-                res.end(`Error loading index.html: ${err}`);
-            } else {
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.end(content);
-            }
-        });
-    } else {
-        res.writeHead(404);
-        res.end('Not Found');
-    }
+// Set the port to 3000 or use the environment variable if defined
+const PORT = process.env.PORT || 3000;
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route to serve the index.html file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const PORT = 8080;
-
-server.listen(PORT, 'localhost', () => {
-    console.log(`Server running at http://localhost:${PORT}/`);
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
